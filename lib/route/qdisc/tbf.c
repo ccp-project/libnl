@@ -446,10 +446,22 @@ static struct rtnl_tc_ops tbf_tc_ops = {
 	},
 	.to_msg_fill		= tbf_msg_fill,
 };
+static struct rtnl_tc_ops bundler_tc_ops = {
+	.to_kind		= "bundle_inbox",
+	.to_type		= RTNL_TC_TYPE_QDISC,
+	.to_size		= sizeof(struct rtnl_tbf),
+	.to_msg_parser		= tbf_msg_parser,
+	.to_dump = {
+	    [NL_DUMP_LINE]	= tbf_dump_line,
+	    [NL_DUMP_DETAILS]	= tbf_dump_details,
+	},
+	.to_msg_fill		= tbf_msg_fill,
+};
 
 static void __init tbf_init(void)
 {
 	rtnl_tc_register(&tbf_tc_ops);
+    rtnl_tc_register(&bundler_tc_ops);
 }
 
 static void __exit tbf_exit(void)
